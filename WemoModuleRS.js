@@ -1,6 +1,8 @@
 var Wemo = require('wemo-client');
-var state = -1;
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 var clientList = {};
+
 class Client {
   constructor(deviceInfo,client){
     //still not sure about the relationship
@@ -21,7 +23,7 @@ class Client {
        });
     }
   }
-//Listener--> Search up how to set up a Listener. 
+//Listener--> Search up how to set up a Listener.
 function startListener(cb){
 
 }
@@ -30,13 +32,21 @@ function discover() {
   var wemo = new Wemo();
   //Listening for Wemo Devices
   wemo.discover(function(err, deviceInfo) {
+    //Error handling
+    client.on('error', function(err) {
+      console.log('Error: %s', err.code);
+    })
     console.log('Wemo Device Found: %j', deviceInfo.friendlyName);
     var client = wemo.client(deviceInfo);
     var user = new Client(deviceInfo,client);
     clientList[user.client.friendlyName] = user;
+    eventEmitter.emit('device');
+    })
+  }
+    //Sned some sort of Event to .js
 
   //Some input to deteremine some sort of request or change the request
-function logic(request)
+function logic(request){
   if (request == 'on'){
     user.turnOn();
   }
@@ -44,18 +54,13 @@ function logic(request)
     user.turnOff();
   }
   else if (request == 'read'){
-    state = user.read();
+    eventEmitter.emit('read',state);
   }
-
-  //Error handling
-  client.on('error', function(err) {
-    console.log('Error: %s', err.code);
-  })
-  });
 }
 
-module.exports.start = start;
-module.exports.state = state;
+//
+module.exports.logic = logic;
+module.exports.discover = discover;
 console.log(module);
 //turnOn('on');
 //turnOn('off');
