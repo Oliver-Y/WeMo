@@ -1,47 +1,43 @@
 var Wemo = require('wemo-client');
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
+var wemo = new Wemo();
 var clientList = {};
 
+//Class for client information
 class Client {
-  constructor(deviceInfo,client){
-    //still not sure about the relationship
-    //between client + device info so I pass both for now.
-    this.deviceInfo == deviceInfo;
+  constructor(client) {
     this.client = client;
-    }
-  turnOn(){
+  }
+  turnOn() {
     this.client.setBinaryState(1);
   }
-  turnOff(){
-    this.client.deviceInfo.setBinaryState(0);
+  turnOff() {
+    this.client.setBinaryState(0);
   }
   read() {
-      this.client.on('binaryState', function(value) {
-         console.log('Binary State changed to: %s', value);
-         return value;
-       });
+      this.client.getBinaryState(function(err,state) {
+        eventEmitter.emit('read',state);
+      })
     }
   }
 
+//Finding all devices and placed in clientList
 function discover() {
-  var wemo = new Wemo();
-  //Listening for Wemo Devices
   wemo.discover(function(err, deviceInfo) {
-    //Listener for errors
-    client.on('error', function(err) {
-      console.log('Error: %s', err.code);
-    })
     console.log('Wemo Device Found: %j', deviceInfo.friendlyName);
     var client = wemo.client(deviceInfo);
-    var user = new Client(deviceInfo,client);
-    clientList[user.client.friendlyName] = user;
-    eventEmitter.emit('device',user);
+    client.on('error', function(err) {
+       console.log('Error: %s', err.code);
+     })
+    var user = new Client(client);
+    clientList[user.client.device.friendlyName] = user;
+    eventEmitter.emit('devices',clientList);
     })
-  console.log("no devices are found");
   }
 
-function logic(request){
+//Logic for determining requests
+function logic(request,user){
   if (request == 'on'){
     user.turnOn();
   }
@@ -49,8 +45,7 @@ function logic(request){
     user.turnOff();
   }
   else if (request == 'read'){
-    state = user.read();
-    eventEmitter.emit('read',state);
+    user.read();
   }
 }
 

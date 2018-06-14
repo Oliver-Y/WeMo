@@ -1,6 +1,10 @@
+var input = document.getElementById('input');
+var msg = '';
 var ws = new WebSocket("ws://localhost:3000");
-//Send information
-exampleSocket.onopen = function (event) {
-  //Prompt for information
-  exampleSocket.send(event);
+ws.onopen = function (event) {
+  input.addEventListener('click',function()
+  {
+    alert('ur message has been sent');
+    ws.send(input.value);
+  })
 };
