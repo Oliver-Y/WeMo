@@ -24,15 +24,11 @@ class Client {
     }
   }
 //Listener--> Search up how to set up a Listener.
-function startListener(cb){
-
-}
-
 function discover() {
   var wemo = new Wemo();
   //Listening for Wemo Devices
   wemo.discover(function(err, deviceInfo) {
-    //Error handling
+    //Listener for errors
     client.on('error', function(err) {
       console.log('Error: %s', err.code);
     })
@@ -40,10 +36,11 @@ function discover() {
     var client = wemo.client(deviceInfo);
     var user = new Client(deviceInfo,client);
     clientList[user.client.friendlyName] = user;
-    eventEmitter.emit('device');
+    eventEmitter.emit('device',user);
     })
+  console.log("no devices are found");
   }
-    //Sned some sort of Event to .js
+    //Send some sort of Event to .js
 
   //Some input to deteremine some sort of request or change the request
 function logic(request){
@@ -54,6 +51,7 @@ function logic(request){
     user.turnOff();
   }
   else if (request == 'read'){
+    state = user.read();
     eventEmitter.emit('read',state);
   }
 }
@@ -61,6 +59,4 @@ function logic(request){
 //
 module.exports.logic = logic;
 module.exports.discover = discover;
-console.log(module);
-//turnOn('on');
-//turnOn('off');
+module.exports.listener = eventEmitter;
