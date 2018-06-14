@@ -23,7 +23,7 @@ class Client {
        });
     }
   }
-//Listener--> Search up how to set up a Listener.
+
 function discover() {
   var wemo = new Wemo();
   //Listening for Wemo Devices
@@ -40,9 +40,7 @@ function discover() {
     })
   console.log("no devices are found");
   }
-    //Send some sort of Event to .js
 
-  //Some input to deteremine some sort of request or change the request
 function logic(request){
   if (request == 'on'){
     user.turnOn();
@@ -56,7 +54,7 @@ function logic(request){
   }
 }
 
-//
+//Exports
 module.exports.logic = logic;
 module.exports.discover = discover;
 module.exports.listener = eventEmitter;

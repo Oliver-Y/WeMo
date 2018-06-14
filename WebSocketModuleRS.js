@@ -1,10 +1,8 @@
-//no logic passing data
 const WebSocketServer = require('ws').Server;
 const WemoSwitch = require('./WemoModuleRS');
 const wss = new WebSocketServer({port: 3000});
 var WemoEm = WemoSwitch.listener;
 
-//ws is an individual clients websocket
 wss.on('connection',function(ws) {
   ws.send('connection made');
   ws.on('message', function (message) {
@@ -20,6 +18,5 @@ wss.on('connection',function(ws) {
     if (message == 'discover'){
       WemoSwitch.discover();
     }
-    //WemoSwitch.start(message);
   });
 });
