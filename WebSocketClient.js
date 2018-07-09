@@ -1,10 +1,8 @@
-var input = document.getElementById('input');
+var button = document.getElementById('button');
 var msg = '';
 var ws = new WebSocket("ws://localhost:3000");
-ws.onopen = function (event) {
-  input.addEventListener('click',function()
-  {
-    alert('ur message has been sent');
-    ws.send(input.value);
-  })
-};
+button.addEventListener('click',function()
+{
+    console.log();
+//    ws.send(document.getElemtnByID('input'));
+})

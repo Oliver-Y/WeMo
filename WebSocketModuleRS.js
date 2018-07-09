@@ -1,14 +1,11 @@
 const WebSocketServer = require('ws').Server;
-const WemoSwitch = require('./WemoModuleRS');
+var Client = require('./WemoModuleRS');
+var Wemo_Client = new Client();
 const wss = new WebSocketServer({port: 3000});
-var WemoEm = WemoSwitch.listener;
-//Will be replaced when used in Scratch Client
-var userList = undefined;
 
 function parseDevice(message) {
-  var whs1 = message.indexOf(' ');
-  var whs2 = message.lastIndexOf(' ');
-  return message.substring(whs1+1,whs2);
+  var space = message.lastIndexOf(' ');
+  return message.substring(0,space);
 }
 
 function parseRequest(message) {
@@ -17,23 +14,33 @@ function parseRequest(message) {
 
 wss.on('connection',function(ws) {
   ws.send('connection made');
+  Wemo_Client.createDiscoverListener(function(clientList){
+    console.log(clientList);
+    ws.send(Object.keys(clientList));
+  });
+  Wemo_Client.createReadListener(function(state){
+    ws.send(state);
+  });
   ws.on('message', function (message) {
-
-    WemoEm.on('devices', function(userlist) {
-        userList = userlist;
-      })
-
-    WemoEm.on('read',function(state) {
-        ws.send(state);
-      })
-
     if (message == 'discover') {
-      WemoSwitch.discover();
+      console.log('sending discovery message');
+      Wemo_Client.discover();
     }
-    else if (message.includes('select')) {
-      var device = parseDevice(message);
-      var request = parseRequest(message);
-      WemoSwitch.logic(request,userList[device])
+    else  {
+      var trim_msg = message.trim();
+      var device = parseDevice(trim_msg);
+      var request = parseRequest(trim_msg);
+      Wemo_Client.logic(request,device)
     }
   });
 });
+
+
+
+/*WemoEm.on('devices', function(userlist) {
+    ws.send(Object.keys(userlist));
+  })*/
+
+/*WemoEm.once('read',function(state) {
+    ws.send(state);
+  })*/
