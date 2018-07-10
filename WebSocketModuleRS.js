@@ -15,7 +15,6 @@ function parseRequest(message) {
 wss.on('connection',function(ws) {
   ws.send('connection made');
   Wemo_Client.createDiscoverListener(function(clientList){
-    console.log(clientList);
     ws.send(Object.keys(clientList));
   });
   Wemo_Client.createReadListener(function(state){
@@ -23,7 +22,6 @@ wss.on('connection',function(ws) {
   });
   ws.on('message', function (message) {
     if (message == 'discover') {
-      console.log('sending discovery message');
       Wemo_Client.discover();
     }
     else  {

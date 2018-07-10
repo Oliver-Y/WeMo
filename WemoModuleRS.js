@@ -33,13 +33,10 @@ Client.prototype.discover = function() {
       console.log('Error: %s', err.code);
     });
     client.on('binaryState', (value) => {
-      console.log('Binary State changed to %s',value);
       this.state = value;
       this._readListener(value);
     })
     this.clientList[client.device.friendlyName] = client;
-  //  console.log(this.clientList);
-    console.log(this._deviceListener);
     this._deviceListener(this.clientList);
   });
   //Update client list
