@@ -4,7 +4,6 @@ var msg = '';
 var ws = new WebSocket("ws://localhost:3000");
 button.addEventListener('click',function()
 {
-    console.log();
-//    ws.send(document.getElemtnByID('input'));
+    ws.send(document.getElemtnByID('input'));
 })
 }
