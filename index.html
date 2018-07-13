@@ -1,56 +1,51 @@
-<!doctype html>
 <html>
-  <head>
-    <script src="./WebSocketClient.js"></script>
-    <link rel = "stylesheet" type = "text/css" href = "style.css">
-  </head>
-  <body>
-    <div class = "container">
-    <div class = "box1">
-    <h1> Wemo Project</h1>
-    <h3> Structure Explained! <h3>
-    <p id = "WemoStructureExplanation">
-      The Wemo communicates with SSPd protocol, which is incompatible with
-      The code is structured into 2 main parts: <br>
-      <ul>
-        <li> ClientSide JS written to communicate with Scratch
-        <li> ServerSide Node.JS acting as an intermediary between Scratch and the Wemo
-      </ul>
-    </p>
-    <p>
-      <blockquote>
-        <p> Check out my GitHub <a href = "https://github.com/Oliver-Y/WeMo"> here! </a> </p>
-      </blockquote>
-    </p>
-  </div>
 
-    <h4>
-      WebSocketClient
-    </h4>
-    <input id = 'input'>
-  </input>
-    <button type = "button">
-      Click me!
-    </button>
-  <center>
-    <a href = "../Ranch Vegetable Cup.jpg">
-    <img src = "../Ranch Vegetable Cup.jpg" atl = 'ranch'>
-  </a>
-</center>
+<head>
+	<title>Purple - Great Simplicity</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+</head>
 
-    <aside>
-      <ul>
-        <li> <a href = "#" >yay</a>
-        <li>yay2
-        <li>yay3
-      </ul>
-      <ol>
-        <li> list 1
-          <li> list 2
-            <li> orange 3
-      </ol>
-    </aside>
-      <div class = "container">
-  </body>
+<body>
 
+	<div id="box">
+
+		<h1 id="title">Wemo Extension</h1>
+		<!--ul id="nav">
+			<li><a href="../index.html">Gray</a></li>
+			<li><a href="../blue/index.html">Blue</a></li>
+			<li><a href="../green/index.html">Green</a></li>
+			<li><a href="../red/index.html">Red</a></li>
+			<li><a href="index.html" class="selected">Purple</a></li>
+		</ul-->
+
+		<div id="header">
+			<img src="images/Block2.png">
+		</div>
+		<div id="body">
+			<div id="main">
+				<h2>Wemo Extension Structure explained</h2>
+				<p> Wemo communicates with SSPD Protocol while Websocket uses HTTP. As such, the protocols are incompatible and an intermediary server has to be written that will recieve data from the Wemo and communicate with Scratch via WebSocket</p>
+				<img src = 'images/Diagram.png' style = "width: 50%; height: 50%;">
+				<br></br>
+				<h4><b>JavaScript</b></h4>
+					<p><u>Serverside:</u> is a combination of a WemoModule and WebSocketModule. WemoModule proccess all the logic and communicates with the Wemo. The WebSocketModule maintains the socket connection and passes on information</p>
+					<p><u>ClientSide</u> A Wemoclient that attaches all WebSocket events and processes the received Data from the server. Provides 2 blocks currently: A block to turn on/off the Wemo and a block to read the state of the Wemo</p>
+				<br><br><br>
+			</div>
+			<div id="side">
+				<h2></h2><br>
+					<img src = "">
+				<br><br>
+			</div>
+		</div>
+
+
+		<div id="foot">
+			<p><a src = "https://github.com/Oliver-Y/WeMo" > OliverY/Wemo </a> </p>
+		</div>
+
+	</div>
+
+</body>
 </html>
