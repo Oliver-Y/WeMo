@@ -21,6 +21,11 @@ Client.prototype.turnOff = function(user) {
   this.clientList[user].setBinaryState(0);
 };
 
+Client.prototype.toggle = function(user) {
+  this.clientList[user].setBinaryState(1);
+  setTimeout(this.turnOff(user),10000);
+}
+
 Client.prototype.read = function(user) {
     this._readListener(this.state);
 };
@@ -52,6 +57,9 @@ Client.prototype.logic = function(request,user) {
     this.turnOff(user);
     } else if (request == 'read'){
        this.read(user);
+     }
+     else if (request == 'toggle'){
+       this.toggle(user);
      }
   }
 };
